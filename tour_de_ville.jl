@@ -70,8 +70,8 @@ function print_c_values(c, size_i, size_j)
 end
 
 function main()
-    lignes = [5, 3, 3, 5, 2]
-    colonnes = [5, 5, 2, 2, 4]
+    lignes = [5,5,5,5,2]
+    colonnes = [4,4,4,5,5]
     tour_de_ville(lignes, colonnes)   
 end
 
