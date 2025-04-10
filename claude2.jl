@@ -1,10 +1,10 @@
-using JuMP, HiGHS
+using JuMP, Cbc
 
 function tour_de_ville(li::Array{Int64}, lj::Array{Int64})
     size_i = size(li,1)
     size_j = size(lj,1)
 
-    model = Model(HiGHS.Optimizer)
+    model = Model(Cbc.Optimizer)
     
     # Variables principales
     @variable(model, x[i in 1:size_i, j in 1:size_j], Bin) # Si la case est visitée
@@ -181,7 +181,7 @@ function detecte_sous_tours(c_sol, size_i, size_j)
         delete!(cases_visitees, start)
         courant = suivant_case(c_sol, start[1], start[2], size_i, size_j)
         
-        while courant != start && courant != nothing
+        while courant != start && courant !== nothing
             push!(sous_tour, courant)
             delete!(cases_visitees, courant)
             courant = suivant_case(c_sol, courant[1], courant[2], size_i, size_j)
@@ -213,11 +213,41 @@ function suivant_case(c_sol, i, j, size_i, size_j)
 end
 
 function main()
-    #lignes = [5,5,5,5,2]
-    #colonnes = [4,4,4,5,5]
-    lignes = [5,3,3,5,2]
-    colonnes = [5,5,2,2,4]
-    tour_de_ville(lignes, colonnes)   
+    println("Choisissez un exemple à résoudre :")
+    println("1. Jeux 1")
+    println("2. Jeux 2")
+    println("3. Jeux 3")
+    println("4. Jeux 4")
+    println("5. Jeux 5")
+    print("Entrez le numéro de l'exemple (1-5) : ")
+    
+    choix = parse(Int, readline())
+    
+    lignes = []
+    colonnes = []
+    
+    if choix == 1
+        lignes = [4,5,3,3,3]
+        colonnes = [3,4,3,3,5]
+    elseif choix == 2
+        lignes = [3,5,2,5,3]
+        colonnes = [3,2,4,5,4]
+    elseif choix == 3
+        lignes = [3,4,5,4,2]
+        colonnes = [4,4,3,3,4]
+    elseif choix == 4
+        lignes = [3,4,3,2,6,2]
+        colonnes = [4,4,2,3,2,5]
+    elseif choix == 5
+        lignes = [4,5,5,2,5,5]
+        colonnes = [4,5,4,5,5,3]
+    else
+        println("Choix invalide. Veuillez relancer le programme.")
+        return
+    end
+    
+    println("Résolution de l'exemple $choix...")
+    tour_de_ville(lignes, colonnes)
 end
 
 main()
