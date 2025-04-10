@@ -1,0 +1,6 @@
+jeux 1 : 16.6 S
+jeux 2 : 16.8 s
+jeux 3 : 16.8 s
+jeux 4 : 17,1 s
+jeux 5 : 25.975 
+jeux 6 : trop grand

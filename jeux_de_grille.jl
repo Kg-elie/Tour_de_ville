@@ -241,13 +241,19 @@ function main()
     elseif choix == 5
         lignes = [4,5,5,2,5,5]
         colonnes = [4,5,4,5,5,3]
+
+        # lignes = [7,7,7,6,6,4,5] trop grand
+        # colonnes = [6,6,7,7,3,7,7]
     else
         println("Choix invalide. Veuillez relancer le programme.")
         return
     end
     
     println("Résolution de l'exemple $choix...")
-    tour_de_ville(lignes, colonnes)
+    
+    # Chronométrer la résolution
+    temps_execution = @elapsed tour_de_ville(lignes, colonnes)
+    println("Temps d'exécution pour l'exemple $choix : $(round(temps_execution, digits=3)) secondes.")
 end
 
 main()
