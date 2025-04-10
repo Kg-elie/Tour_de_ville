@@ -14,11 +14,10 @@ function tour_de_ville(li::Array{Int64}, lj::Array{Int64})
     
     @constraint(model, ligne[i in 1:size_i], sum(x[i,j] for j in 1:size_j) == li[i])
     @constraint(model, colonne[j in 1:size_j], sum(x[i,j] for i in 1:size_i) == lj[j])
-    @constraint(model, voisine[i1 in 1:size_i, j1 in 1:size_j, i2 in size_j, j2 in 1:size_j; abs(i1-i2) + abs(j1-j2) == 1], c[i1,j1,i2,j2] <= 1)
+    @constraint(model, voisine[i1 in 1:size_i, j1 in 1:size_j, i2 in size_i, j2 in 1:size_j; abs(i1-i2) + abs(j1-j2) == 1], c[i1,j1,i2,j2] <= 1)
     @constraint(model, pas_voisin[i1 in 1:size_i, j1 in 1:size_j, i2 in 1:size_i, j2 in 1:size_j; abs(i1-i2) + abs(j1-j2) != 1 ], c[i1,j1,i2,j2] == 0)
     @constraint(model, entrant[i in 1:size_i, j in 1:size_j], sum(c[i1,j1,i,j] for i1 in 1:size_i, j1 in 1:size_j) == x[i,j])
     @constraint(model, sortant[i in 1:size_i, j in 1:size_j], sum(c[i,j,i2,j2] for i2 in 1:size_i, j2 in 1:size_j) == x[i,j])
-    #@constraint(model, direction[i1 in 1:size_i, j1 in 1:size_j, i2 in size_j, j2 in 1:size_j], c[i1,j1,i2,j2]+c[i2,j2,i1,j1] == x[i1,j1])
     
     #println(model)
     set_silent(model)
@@ -50,7 +49,7 @@ function tour_de_ville(li::Array{Int64}, lj::Array{Int64})
             println("|") 
         end
         println("   -------------------")
-        #print_c_values(c_sol, size_i, size_j)
+        print_c_values(c_sol, size_i, size_j)
     else
         println("Pas de de solution optimale trouvée")
     end
@@ -70,8 +69,10 @@ function print_c_values(c, size_i, size_j)
 end
 
 function main()
-    lignes = [5,5,5,5,2]
-    colonnes = [4,4,4,5,5]
+    #lignes = [5,5,5,5,2]
+    #colonnes = [4,4,4,5,5]
+    lignes = [5,3,3,5,2]
+    colonnes = [5,5,2,2,4]
     tour_de_ville(lignes, colonnes)   
 end
 
