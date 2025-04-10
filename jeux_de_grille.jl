@@ -1,10 +1,12 @@
 using JuMP, Cbc
+#using HiGHS
 
 function tour_de_ville(li::Array{Int64}, lj::Array{Int64})
     size_i = size(li,1)
     size_j = size(lj,1)
 
     model = Model(Cbc.Optimizer)
+    #model = Model(HiGHS.Optimizer)
     
     # Variables principales
     @variable(model, x[i in 1:size_i, j in 1:size_j], Bin) # Si la case est visitée
@@ -78,45 +80,45 @@ function tour_de_ville(li::Array{Int64}, lj::Array{Int64})
         c_sol = round.(Int64, value.(c))
         
         # Affichage des nombres en haut
-        print("   ")
+        print("    ")
         for j in 1:size_j
-            print(" ", lj[j], "  ")
+            print("   ", lj[j], "    ")
         end 
         println("")
         
         # Affichage de la grille
-        println("   " * "-" ^ (size_j * 4 + 1))
+        println("   " * "-" ^ (size_j * 4 * 2 + 1))
         
         for i in 1:size_i
             # Première ligne de chaque case
-            print(li[i], "  |")
+            print("   |")
             for j in 1:size_j
                 if x_sol[i,j] == 1 && i > 1 && (c_sol[i,j,i-1,j] == 1 || c_sol[i-1,j,i,j] == 1)
-                    print(" * |") # Connection vers le haut
+                    print("   *   |") # Connection vers le haut
                 else
-                    print("   |")
+                    print("       |")
                 end
             end
             println("")
             
             # Deuxième ligne de chaque case
-            print("   |")
+            print(li[i],"  |")
             for j in 1:size_j
                 if x_sol[i,j] == 1
                     left = (j > 1 && (c_sol[i,j,i,j-1] == 1 || c_sol[i,j-1,i,j] == 1))
                     right = (j < size_j && (c_sol[i,j,i,j+1] == 1 || c_sol[i,j+1,i,j] == 1))
                     
                     if left && right
-                        print("***|") # Connexion gauche et droite
+                        print(" * * * |") # Connexion gauche et droite
                     elseif left
-                        print("** |") # Connexion gauche
+                        print(" * *   |") # Connexion gauche
                     elseif right
-                        print(" **|") # Connexion droite
+                        print("   * * |") # Connexion droite
                     else
-                        print(" * |") # Juste un marqueur pour la case visitée
+                        print("   *   |") # Juste un marqueur pour la case visitée
                     end
                 else
-                    print("   |")
+                    print("       |")
                 end
             end
             println("")
@@ -125,14 +127,14 @@ function tour_de_ville(li::Array{Int64}, lj::Array{Int64})
             print("   |")
             for j in 1:size_j
                 if x_sol[i,j] == 1 && i < size_i && (c_sol[i,j,i+1,j] == 1 || c_sol[i+1,j,i,j] == 1)
-                    print(" * |") # Connection vers le bas
+                    print("   *   |") # Connection vers le bas
                 else
-                    print("   |")
+                    print("       |")
                 end
             end
             println("")
             
-            println("   " * "-" ^ (size_j * 4 + 1))
+            println("   " * "-" ^ (size_j * 4 * 2 + 1))
         end
         
         # Vérification finale du circuit
@@ -213,15 +215,9 @@ function suivant_case(c_sol, i, j, size_i, size_j)
 end
 
 function main()
-    println("Choisissez un exemple à résoudre :")
-    println("1. Jeux 1")
-    println("2. Jeux 2")
-    println("3. Jeux 3")
-    println("4. Jeux 4")
-    println("5. Jeux 5")
-    print("Entrez le numéro de l'exemple (1-5) : ")
+    print("Entrez le numéro de l'exemple à résoudre (1-8) : ")
     
-    choix = parse(Int, readline())
+    choix = parse(Int64, readline())
     
     lignes = []
     colonnes = []
@@ -241,9 +237,15 @@ function main()
     elseif choix == 5
         lignes = [4,5,5,2,5,5]
         colonnes = [4,5,4,5,5,3]
-
-        # lignes = [7,7,7,6,6,4,5] trop grand
-        # colonnes = [6,6,7,7,3,7,7]
+    elseif choix == 6
+        lignes = [6,6,7,6,4,7,6]
+        colonnes = [7,7,6,4,7,5,6]
+    elseif choix == 7
+        lignes = [8,5,5,4,7,5,6,8]
+        colonnes = [7,4,7,6,6,8,4,6]
+    elseif choix == 8
+        lignes = [6,7,7,4,8,5,8,9,4]
+        colonnes = [7,6,6,7,7,6,5,7,7]
     else
         println("Choix invalide. Veuillez relancer le programme.")
         return

@@ -1,6 +1,17 @@
-jeux 1 : 16.6 S
-jeux 2 : 16.8 s
-jeux 3 : 16.8 s
-jeux 4 : 17,1 s
-jeux 5 : 25.975 
-jeux 6 : trop grand
+Cbc (Windows)
+jeu 1 : 16.6 s
+jeu 2 : 16.8 s
+jeu 3 : 16.8 s
+jeu 4 : 17,1 s
+jeu 5 : 25.975 
+jeu 6 : trop grand
+
+HiGHS (MacOS)
+jeu 1 : 0.137 s
+jeu 2 : 0.13 s
+jeu 3 : 0.142 s
+jeu 4 : 0.164 s
+jeu 5 : 0.581 s
+jeu 6 : 0.938 s
+jeu 7 : 2.283 s
+jeu 8 : 104.363 s

@@ -1,5 +1,7 @@
 # Rapport du Projet Solveur de Tour de Grille
 
+Tiphaine GAYET & Elie KANGA
+
 ## Aperçu du Projet
 
 Ce projet implémente une solution d'optimisation mathématique pour le problème "Tour de Ville" sur une grille. Le problème consiste à trouver un chemin continu unique qui visite un nombre spécifique de cellules dans chaque ligne et colonne d'une grille, selon des paramètres d'entrée définis.
@@ -76,31 +78,46 @@ La solution est visualisée sous forme textuelle, montrant :
 
 Format de sortie exemple :
 ```
-    3   4   3   3   5  
-   ---------------------
-4  |   |   |   | * |   |
-   |   |   |   |** |   |
-   |   |   |   | * |   |
-   ---------------------
-5  |   | * | * | * | * |
-   |   |** |** |** |** |
-   |   | * | * | * | * |
-   ---------------------
-...
+       3       4       3       3       5    
+   -----------------------------------------
+   |       |       |       |       |       |
+4  |   * * | * *   |       |   * * | * *   |
+   |   *   |   *   |       |   *   |   *   |
+   -----------------------------------------
+   |   *   |   *   |       |   *   |   *   |
+5  |   *   |   * * | * * * | * *   |   *   |
+   |   *   |       |       |       |   *   |
+   -----------------------------------------
+   |   *   |       |       |       |   *   |
+3  |   * * | * *   |       |       |   *   |
+   |       |   *   |       |       |   *   |
+   -----------------------------------------
+   |       |   *   |       |       |   *   |
+3  |       |   * * | * *   |       |   *   |
+   |       |       |   *   |       |   *   |
+   -----------------------------------------
+   |       |       |   *   |       |   *   |
+3  |       |       |   * * | * * * | * *   |
+   |       |       |       |       |       |
+   -----------------------------------------
 ```
 
 ## Analyse de Performance
 
 Le programme a été testé sur 5 différentes configurations de grille avec les temps d'exécution suivants :
 
-| Cas de Test | Temps d'Exécution (secondes) |
-|-------------|------------------------------|
-| Jeux 1      | 16,6                         |
-| Jeux 2      | 16,8                         |
-| Jeux 3      | 16,8                         |
-| Jeux 4      | 17,1                         |
-| Jeux 5      | 25,975                       |
-| Jeux 6      | Trop grand (non résolvable)  |
+| Cas de Test    | Temps d'Exécution (secondes) | Temps d'Exécution (secondes) |
+|                | avec Cbc (Windows)           | avec HiGHS (MacOS)           |
+|----------------|------------------------------|------------------------------|
+| Jeu 1    (5*5) | 16,6                         | 0.137                        |
+| Jeu 2    (5*5) | 16,8                         | 0.13                         |
+| Jeu 3    (5*5) | 16,8                         | 0.142                        |
+| Jeu 4    (6*6) | 17,1                         | 0.164                        |
+| Jeu 5    (6*6) | 25,975                       | 0.581                        |
+| Jeu 6    (7*7) | //                           | 0.938                        |
+| Jeu 7    (8*8) | //                           | 2.283                        |
+| Jeu 8    (9*9) | //                           | 104.363                      |
+
 
 Le temps d'exécution augmente avec la complexité et la taille de la grille, comme attendu pour un problème NP-difficile.
 
